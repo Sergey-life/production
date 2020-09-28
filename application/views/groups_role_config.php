@@ -5,6 +5,7 @@
 <div class="wrapper" xmlns="http://www.w3.org/1999/html">
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
+            <div class="content-header">
             <div class="row">
                 <div class="col-md-6">
                     <div class="card">
@@ -74,12 +75,13 @@
                                                         'type'  => 'hidden',
                                                         'name'  => 'idGroup',
                                                         'value' => $group->id,
-                                                        'id' => $groupsID = $groupID[$key]
+                                                        'id' => $groupsID = $groupID[$key],
+                                                        'class' => 'idGroup'
                                                     ];?>
                                                 <?= form_input($data); ?>
                                                 <?php endforeach;?>
                                                 <div>
-                                                    <button type="submit" class="btn btn-primary test2" id="btn">Save</button>
+                                                    <button type="submit" class="btn btn-outline-warning" id="btnSubmit">Save</button>
                                                 </div>
                                                 <?php echo form_close();?>
                                             </div>
@@ -90,40 +92,41 @@
                         </div>
                         <!-- /.card-body -->
                     </div>
-                    <div class="row">
-                    <div id="showData"></div>
-                    </div>
-<!--                    --><?php //echo "<pre>"; print_r($_POST);?>
-<!--                    --><?php //echo "<pre>"; print_r($fetchPermission);?>
                     <!-- /.card -->
                 </div>
                 <!-- /.col -->
-            <p><a href="<?= base_url() ?>auth">Back</a></p>
-<!--                --><?php //echo '<pre>'; print_r($_POST);?>
+                <p><a href="<?= base_url('auth') ?>"><button type="submit" class="btn btn-outline-secondary" id="btnSubmit">Back</button></a></p>
+            </div>
         </div>
     </div>
+    <?php $this->load->view('layouts/footer') ?>
 </div>
-
-<?php $this->load->view('layouts/footer') ?>
 <?php $this->load->view('layouts/js') ?>
 <script>
     $('form').submit(function(e){
         e.preventDefault();
-        let empPage = $(this).attr('form').val();
-        let empGroup = $(this).val('input');
-        console.log(empPage,empGroup);
+        let form = $(this);
+        let idGroup = form.find(".idGroup").val();
+        let pages = [];
+        form.find('input[name="pages[]"]:checked').each(function() {
+            if ($(this).is(":checked")) {
+                pages.push($(this).val());
+            }
+        });
         $.ajax({
             type : "POST",
             url  : "<?php echo base_url() ?>groups_role_config/save",
             dataType : "json",
-            data : {pages: empPage, idGroup: empGroup},
-            success (data){
-                alert('Rows saved!');
-                console.log(data);
+            cache : false,
+            data : {pages: pages, idGroup: idGroup},
+            success (){
+                if (!pages) {
+                    alert('Доступы к страницам удалены!');
+                }
+                alert('Операция сделана успешно!');
             }
         });
     });
-
 </script>
 </body>
 </html>

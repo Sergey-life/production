@@ -8,6 +8,11 @@ class Groups_role_config extends CI_Controller {
         parent::__construct();
         $this->load->helper('form');
         $this->load->model('permission_page_group_model');
+        $this->load->library('ion_auth');
+        if (!$this->ion_auth->logged_in())
+        {
+            redirect('auth/login', 'refresh');
+        }
     }
 
     public function index()
@@ -36,7 +41,7 @@ class Groups_role_config extends CI_Controller {
     public function save()
     {
         if ($this->input->post()) {
-            $pages[] = $this->input->post('pages');
+            $pages = $this->input->post('pages');
             $group_id = $this->input->post('idGroup');
             $this->permission_page_group_model->clear_group_permissions($group_id);
 
