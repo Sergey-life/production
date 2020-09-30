@@ -58,4 +58,14 @@ class Permission_page_group_model extends CI_Model
         return $query->result();
 
     }
+
+//    public function parent_id()
+//    {
+//        $this->db->select('*');
+//        $this->db->from('pages');
+//        $this->db->join('page_groups', 'pages.id = page_groups.page_id', 'inner');
+//        $this->db->join('groups', 'page_groups.group_id = groups.id', 'inner');
+//        $query = $this->db->get();
+//        return $query->result();
+//    }
 }

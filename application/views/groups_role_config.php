@@ -1,6 +1,6 @@
 <?php $this->load->view('layouts/meta') ?>
 <?php $this->load->view('layouts/header') ?>
-<?php $this->load->view('layouts/sidebar') ?>
+<?php $this->load->view('set_group_access_to_pages')?>
 
 <div class="wrapper" xmlns="http://www.w3.org/1999/html">
         <!-- Content Wrapper. Contains page content -->
@@ -64,13 +64,12 @@
                                             <div id="<?= $accordionID = $accordionsID[$key];?>" class="panel-collapse collapse">
                                             <div class="card-body">
                                                 <?php $forms = $idForm[$key]; ?>
-                                                <?php echo form_open('groups_role_config/save', array('id' => $forms));?>
+                                                <?php echo form_open('groups_role_config/saveOrDeletePermissionForGroup', array('id' => $forms));?>
                                                 <?php foreach ($pages as $page) :?>
                                                     <label class="checkbox">
                                                     <input type="checkbox" class="get_value" value="<?= $page->id;?>" id="<?=$pagesID = $pageID[$key];?>" name="pages[]" <?php if (!empty($fetchPermission[$group->id][$page->id])) : ?>checked<?php endif ?>>
                                                         <?php echo $page->permission_description;?>
                                                 </label>
-<!--                                                    --><?php //echo form_hidden('idGroup', $group->id);?>
                                                 <?php $data = [
                                                         'type'  => 'hidden',
                                                         'name'  => 'idGroup',
@@ -115,7 +114,7 @@
         });
         $.ajax({
             type : "POST",
-            url  : "<?php echo base_url() ?>groups_role_config/save",
+            url  : "<?php echo base_url() ?>groups_role_config/saveOrDeletePermissionForGroup",
             dataType : "json",
             cache : false,
             data : {pages: pages, idGroup: idGroup},

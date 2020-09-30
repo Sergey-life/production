@@ -26,6 +26,10 @@ class Groups_role_config extends CI_Controller {
         $permissions = $this->permission_page_group_model->fetch_permissions();
         $data['fetchPermission'] = $this->preparePermission($permissions);
 
+        // Отображаем группы и доступные для них странницы
+        $accessiblePages = $this->permission_page_group_model->fetch_permissions();
+        $data['accessiblePages'] = $this->preparePagesForGroups($accessiblePages);
+//
         $this->load->view('groups_role_config', $data);
     }
 
@@ -38,7 +42,16 @@ class Groups_role_config extends CI_Controller {
         return $result;
     }
 
-    public function save()
+    private function preparePagesForGroups($accessiblePages)
+    {
+        $result = [];
+        foreach ($accessiblePages as $accessiblePage) {
+            $result[$accessiblePage->name][$accessiblePage->permission_description] = $accessiblePage;
+        }
+        return $result;
+    }
+
+    public function saveOrDeletePermissionForGroup()
     {
         if ($this->input->post()) {
             $pages = $this->input->post('pages');
