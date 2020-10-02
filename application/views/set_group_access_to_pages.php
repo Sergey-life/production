@@ -35,9 +35,9 @@
                     <?php foreach($group_data as $page_name => $page_data) :?>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="./index.html" class="nav-link active">
+                            <a href="<?php $url = 'https://test.alser.ua/production/'; echo $url . rtrim($page_data->method_name, '/'); ?>" class="nav-link active">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p><?= $page_data->permission_description; ?></p>
+                                <p><?php echo $page_data->permission_description; ?></p>
                             </a>
                         </li>
                     </ul>
@@ -51,6 +51,8 @@
     <!-- /.sidebar -->
 </aside>
 <?php //echo '<pre>'; print_r($accessiblePages);?>
+<?php //echo '<pre>'; print_r($_SERVER['REQUEST_URI']);?>
+
 <?php //foreach ($accessiblePages as $group_name => $group_data){
 //    echo '<pre>' . $group_name;
 //    foreach ($group_data as $page_name => $page_data){

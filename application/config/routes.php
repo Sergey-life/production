@@ -53,4 +53,3 @@ $route['default_controller'] = 'auth/index';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
-//$route['groups_role_config'] = 'groups_role_config/parent_id';
