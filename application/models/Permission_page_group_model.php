@@ -59,13 +59,15 @@ class Permission_page_group_model extends CI_Model
 
     }
 
-//    public function parent_id()
-//    {
-//        $this->db->select('*');
-//        $this->db->from('pages');
-//        $this->db->join('page_groups', 'pages.id = page_groups.page_id', 'inner');
-//        $this->db->join('groups', 'page_groups.group_id = groups.id', 'inner');
-//        $query = $this->db->get();
+    public function parent_id()
+    {
+//        $sql = "SELECT a.id, a.permission_description, b.id, b.parent_id FROM pages as a JOIN pages as b ON a.parent_id = b.id";
+//        $query = $this->db->query($sql);
 //        return $query->result();
-//    }
+        $this->db->select('*');
+        $this->db->from('pages a');
+        $this->db->join('pages b', 'a.id = b.parent_id', 'inner');
+        $query = $this->db->get();
+        return $query->result();
+    }
 }

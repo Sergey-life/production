@@ -10,7 +10,7 @@
                 <div class="col-md-6">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">Collapsible Accordion</h3>
+                            <h3 class="card-title">Группы пользователей</h3>
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
@@ -65,10 +65,14 @@
                                             <div class="card-body">
                                                 <?php $forms = $idForm[$key]; ?>
                                                 <?php echo form_open('groups_role_config/saveOrDeletePermissionForGroup', array('id' => $forms));?>
+
+                                                <br>
+                                                <hr>
                                                 <?php foreach ($pages as $page) :?>
                                                     <label class="checkbox">
                                                     <input type="checkbox" class="get_value" value="<?= $page->id;?>" id="<?=$pagesID = $pageID[$key];?>" name="pages[]" <?php if (!empty($fetchPermission[$group->id][$page->id])) : ?>checked<?php endif ?>>
                                                         <?php echo $page->permission_description;?>
+<!--                                                        --><?php //echo rtrim($page->type, 'page');?>
                                                 </label>
                                                 <?php $data = [
                                                         'type'  => 'hidden',
@@ -91,6 +95,7 @@
                         </div>
                         <!-- /.card-body -->
                     </div>
+                    <?php echo "<pre>"; print_r(array_reverse($parent_id));?>
                     <!-- /.card -->
                 </div>
                 <!-- /.col -->
