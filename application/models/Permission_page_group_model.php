@@ -21,6 +21,25 @@ class Permission_page_group_model extends CI_Model
         $query = $this->db->get('pages');
         return $query->result();
     }
+    //Получем группы для страниц
+    public function fetchGroupForPages()
+    {
+        $this->db->select('*');
+        $this->db->from('pages');
+        $this->db->where('type', 'group');
+        $query = $this->db->get();
+        return $query->result_array();
+    }
+    //Получем страницы для групп
+    public function fetchPagesForGroup()
+    {
+        $this->db->select('*');
+        $this->db->from('pages');
+        $this->db->where('type', 'page', 'ajax');
+        $this->db->or_where('type', 'ajax');
+        $query = $this->db->get();
+        return $query->result_array();
+    }
 
     public function set_permissions($permissionsData)
     {
@@ -57,17 +76,5 @@ class Permission_page_group_model extends CI_Model
         $query = $this->db->get();
         return $query->result();
 
-    }
-
-    public function parent_id()
-    {
-//        $sql = "SELECT a.id, a.permission_description, b.id, b.parent_id FROM pages as a JOIN pages as b ON a.parent_id = b.id";
-//        $query = $this->db->query($sql);
-//        return $query->result();
-        $this->db->select('*');
-        $this->db->from('pages a');
-        $this->db->join('pages b', 'a.id = b.parent_id', 'inner');
-        $query = $this->db->get();
-        return $query->result();
     }
 }

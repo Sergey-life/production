@@ -65,27 +65,31 @@
                                             <div class="card-body">
                                                 <?php $forms = $idForm[$key]; ?>
                                                 <?php echo form_open('groups_role_config/saveOrDeletePermissionForGroup', array('id' => $forms));?>
-
                                                 <br>
                                                 <hr>
-                                                <?php foreach ($pages as $page) :?>
-                                                    <label class="checkbox">
-                                                    <input type="checkbox" class="get_value" value="<?= $page->id;?>" id="<?=$pagesID = $pageID[$key];?>" name="pages[]" <?php if (!empty($fetchPermission[$group->id][$page->id])) : ?>checked<?php endif ?>>
-                                                        <?php echo $page->permission_description;?>
-<!--                                                        --><?php //echo rtrim($page->type, 'page');?>
-                                                </label>
-                                                <?php $data = [
-                                                        'type'  => 'hidden',
-                                                        'name'  => 'idGroup',
-                                                        'value' => $group->id,
-                                                        'id' => $groupsID = $groupID[$key],
-                                                        'class' => 'idGroup'
-                                                    ];?>
-                                                <?= form_input($data); ?>
-                                                <?php endforeach;?>
-                                                <div>
-                                                    <button type="submit" class="btn btn-outline-warning" id="btnSubmit">Save</button>
-                                                </div>
+                                                <?php foreach ($parent_id as $parents_id) :?>
+                                                    <?php foreach ($parents_id as $parentPages) :?>
+<!--                                                --><?php //foreach ($pages as $page) :?>
+                                                            <label class="checkbox">
+                                                            <input type="checkbox" class="get_value" value="<?= $parentPages->id;?>" id="<?=$pagesID = $pageID[$key];?>" name="pages[]" <?php if (!empty($fetchPermission[$group->id][$parentPages->id])) : ?>checked<?php endif ?>>
+                                                                <?php echo $parentPages->permission_description;?>
+                                                            </label>
+                                                        <?php $data = [
+                                                                'type'  => 'hidden',
+                                                                'name'  => 'idGroup',
+                                                                'value' => $group->id,
+                                                                'id' => $groupsID = $groupID[$key],
+                                                                'class' => 'idGroup'
+                                                            ];?>
+                                                        <?= form_input($data); ?>
+                                                        <?php endforeach;?>
+                                                    <?php endforeach;?>
+<!--                                                --><?php //endforeach;?>
+                                                <br>
+                                                <hr>
+                                                        <div>
+                                                            <button type="submit" class="btn btn-outline-warning" id="btnSubmit">Save</button>
+                                                        </div>
                                                 <?php echo form_close();?>
                                             </div>
                                         </div>
@@ -95,7 +99,8 @@
                         </div>
                         <!-- /.card-body -->
                     </div>
-                    <?php echo "<pre>"; print_r(array_reverse($parent_id));?>
+                    <?php echo "<pre>"; print_r($pagesForGroup);?>
+                    <hr>
                     <!-- /.card -->
                 </div>
                 <!-- /.col -->

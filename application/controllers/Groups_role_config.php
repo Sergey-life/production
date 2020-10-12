@@ -30,8 +30,10 @@ class Groups_role_config extends CI_Controller {
         $accessiblePages = $this->permission_page_group_model->fetch_permissions();
         $data['accessiblePages'] = $this->preparePagesForGroups($accessiblePages);
 
-        $parent_id = $this->permission_page_group_model->parent_id();
-        $data['parent_id'] = $this->prepareParent_id($parent_id);
+        $fetchGroupForPages = $this->permission_page_group_model->fetchGroupForPages();
+
+        $fetchPagesForGroup = $this->permission_page_group_model->fetchPagesForGroup();
+        $data['pagesForGroup'] = $this->prepare($fetchGroupForPages, $fetchPagesForGroup);
 //
         $this->load->view('groups_role_config', $data);
     }
@@ -54,12 +56,58 @@ class Groups_role_config extends CI_Controller {
         return $result;
     }
 
-    private function prepareParent_id($parent_id)
+    private function prepare($fetchGroupForPages, $fetchPagesForGroup)
     {
         $result = [];
-        foreach ($parent_id as $parents_id) {
-            $result[$parents_id->permission_description][$parents_id->permission_description] = $parents_id;
+
+        foreach ($fetchGroupForPages as $fetchGroupForPage) {
+            $result[$fetchGroupForPage->id] = $fetchGroupForPage;
         }
+
+        foreach ($fetchPagesForGroup as $fetchPageForGroup) {
+            $result[$fetchPageForGroup->parent_id]['pages'][$fetchPageForGroup->id] = $fetchPageForGroup;
+        }
+
+//        $groups = [
+//            '11' => [
+//                'id' => 11,
+//                'name' => 'Administration',
+//                // И все остальные поля
+//                'pages' => [
+//                    '1' => [
+//                        'id' => 1,
+//                        'name' => 'Страница 1',
+//                        // Дополнительные поля страницы
+//                        'parent_id' => 11,
+//                    ],
+//                    '2' => [
+//                        'id' => 2,
+//                        'name' => 'Страница 2',
+//                        // Дополнительные поля страницы
+//                        'parent_id' => 11,
+//                    ],
+//                    '4' => [
+//                        'id' => 4,
+//                        'name' => 'Страница 4',
+//                        // Дополнительные поля страницы
+//                        'parent_id' => 11,
+//                    ],
+//                ]
+//            ],
+//            '12' => [
+//                'id' => 12,
+//                'name' => 'Group 2',
+//                // И все остальные поля
+//                'pages' => [
+//                    '3' => [
+//                        'id' => 3,
+//                        'name' => 'Страница 3',
+//                        // Дополнительные поля страницы
+//                        'parent_id' => 12,
+//                    ],
+//                ]
+//            ],
+//        ];
         return $result;
     }
 
